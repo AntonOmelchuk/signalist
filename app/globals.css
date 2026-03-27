@@ -4,6 +4,10 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@theme {
+  --color-yellow-400: #FDD458;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
