@@ -5,7 +5,10 @@ import { Geist, Geist_Mono, JetBrains_Mono } from "next/font/google";
 
 import { cn } from "@/lib/utils";
 
-const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono" });
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
+});
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,7 +22,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Signalist",
-  description: "Track real-time stock prices, get personalized alerts and explore detailed company insights.",
+  description:
+    "Track real-time stock prices, get personalized alerts and explore detailed company insights.",
 };
 
 export default function RootLayout({
