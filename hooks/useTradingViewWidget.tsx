@@ -22,7 +22,6 @@ const useTradingViewWidget = ({ scriptUrl, config, height = 600 }: IProps) => {
 
     script.async = true;
     script.innerHTML = JSON.stringify(config);
-    containerRef.current.appendChild(script);
 
     containerRef.current.appendChild(script);
     containerRef.current.dataset.loaded = "true";
