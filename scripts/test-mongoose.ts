@@ -1,8 +1,7 @@
 import dotenv from "dotenv";
+dotenv.config({ path: process.env.ENV_PATH || ".env" });
 
 import { connectToDatabase } from "../database/mongoose";
-
-dotenv.config({ path: process.env.ENV_PATH || ".env" });
 
 async function main() {
   console.log("Testing MongoDB connection...");
