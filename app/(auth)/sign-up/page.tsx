@@ -26,7 +26,7 @@ const SignUp = () => {
       country: "US",
       investmentGoals: "Growth",
       riskTolerance: "Medium",
-      preferredIndustry: "Techlogy",
+      preferredIndustry: "Technology",
     },
     mode: "onSubmit",
   });
@@ -40,7 +40,7 @@ const SignUp = () => {
 
   return (
     <>
-      <h1 className="form-title">Sing Up & Personalize</h1>
+      <h1 className="form-title">Sign Up & Personalize</h1>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         <InputField
@@ -62,8 +62,10 @@ const SignUp = () => {
           placeholder="example@email.com"
           validation={{
             required: "Email is required",
-            pattern: /^\w+@\w+\.\w+$/,
-            message: "Email is required",
+            pattern: {
+              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+              message: "Please enter a valid email address",
+            },
           }}
         />
         <InputField
@@ -104,10 +106,10 @@ const SignUp = () => {
           required
         />
         <SelectField
-          name="prefferedIndustry"
-          label="Preffered Industry"
+          name="preferredIndustry"
+          label="Preferred Industry"
           error={errors.preferredIndustry}
-          placeholder="Select your preffered industry"
+          placeholder="Select your preferred industry"
           options={PREFERRED_INDUSTRIES}
           control={control}
           required
