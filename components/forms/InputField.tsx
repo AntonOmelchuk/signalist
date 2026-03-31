@@ -14,7 +14,6 @@ const InputField = ({
   disabled,
   value,
 }: FormInputProps) => {
-  console.log("error", error);
   return (
     <div className="space-y-2">
       <Label htmlFor={name} className="form-label">
