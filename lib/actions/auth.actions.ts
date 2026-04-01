@@ -41,7 +41,7 @@ export const signUpWithEmail = async ({
     return { success: true, data: response };
   } catch (error) {
     console.log("Sign up failed", error);
-    return { succes: false, error: "Sign up failed!" };
+    throw error instanceof Error ? error : new Error("Sign up failed!");
   }
 };
 
