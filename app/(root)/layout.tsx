@@ -5,7 +5,7 @@ import Header from "@/components/Header";
 import { auth } from "@/lib/better-auth/auth";
 
 const Layout = async ({ children }: { children: React.ReactNode }) => {
-  // if (!auth) redirect("/sign-in");
+  if (!auth) redirect("/sign-in");
 
   const session = await auth.api.getSession({
     headers: await headers(),
