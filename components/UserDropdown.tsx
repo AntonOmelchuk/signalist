@@ -16,34 +16,26 @@ import { cn } from "@/lib/utils";
 import NavItems from "./NavItems";
 import UserAvatar from "./UserAvatar";
 
-const UserDropdown = () => {
+const UserDropdown = ({ user }: { user: User }) => {
   const router = useRouter();
 
   const handleSignOut = async () => {
     router.push("/sign-in");
   };
 
-  const mockUser = {
-    img: "https://github.com/shadcn.png",
-    name: "John",
-    email: "fake@mail.com",
-  };
+  const img = "https://github.com/shadcn.png";
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button className="flex items-center gap-3 bg-transparent outline-none">
-          <UserAvatar img={mockUser.img} name={mockUser.name} />
+          <UserAvatar img={img} name={user.name} />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="min-w-3xs">
         <DropdownMenuLabel>
           <div className="relative flex items-center gap-3 py-2">
-            <UserAvatar
-              img={mockUser.img}
-              name={mockUser.name}
-              email={mockUser.email}
-            />
+            <UserAvatar img={img} name={user.name} email={user.email} />
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator className="bg-gray-600" />
