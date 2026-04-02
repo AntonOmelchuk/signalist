@@ -1,4 +1,6 @@
+import { getNews } from "../actions/finnhub.actions";
 import { getAllUsersForNewsEmail } from "../actions/user.actions";
+import { getWatchlistSymbolsByEmail } from "../actions/watchlist.actions";
 import { sendWelcomeEmail } from "../nodemailer";
 import inngest from "./client";
 import { PERSONALIZED_WELCOME_EMAIL_PROMPT } from "./prompts";
@@ -63,12 +65,40 @@ export const sendDailyNewsSummary = inngest.createFunction(
     triggers: [{ event: "app/send.daily.news" }, { cron: "0 12 * * *" }],
   },
   async ({ step }) => {
-    // Step #1 Get all users for news delivery
+    // Step#1 Get all users for news delivery
     const users = await step.run("get-all-users", getAllUsersForNewsEmail);
 
     if (!users || users.length === 0)
       return { success: false, message: "No users found for news email" };
 
-    // Step #2 Fetch personalized news for each user
+    // Step#2 Fetch personalized news for each user
+    const results = await step.run("fetch-user-news", async () => {
+      const perUser: Array<{
+        user: UserForNewsEmail;
+        articles: MarketNewsArticle[];
+      }> = [];
+
+      for (const user of users as UserForNewsEmail[]) {
+        try {
+          const { email } = user;
+          const symbols = await getWatchlistSymbolsByEmail(email);
+          let articles = await getNews(symbols);
+          // Enforce max 6 articles per user
+          articles = (articles || []).slice(0, 6);
+          // If still emppty, fallback to general
+          if (!articles || articles.length === 0) {
+            articles = await getNews();
+            articles = (articles || []).slice(0, 6);
+          }
+
+          perUser.push({ user, articles });
+        } catch (error) {
+          console.error("daily-news: error preparing user news", error);
+          perUser.push({ user, articles: [] });
+        }
+      }
+    });
+
+    // Step#3 Summarize news via AI
   },
 );

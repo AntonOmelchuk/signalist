@@ -43,7 +43,7 @@ export const getNews = async (
       await Promise.all(
         cleanSymbols.map(async (symbol) => {
           try {
-            const url = `${FINNHUB_BASE_URL}/company-news?symbol=${encodeURIComponent(symbol)}&from=${from}&to=${to}&token=${TOKEN}}`;
+            const url = `${FINNHUB_BASE_URL}/company-news?symbol=${encodeURIComponent(symbol)}&from=${from}&to=${to}&token=${TOKEN}`;
             const article = await fetchJSON<RawNewsArticle[]>(url, 300);
 
             perSymbolArticles[symbol] = (article || []).filter(validateArticle);
