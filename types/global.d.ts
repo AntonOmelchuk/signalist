@@ -148,6 +148,12 @@ declare global {
     peRatio?: string;
   };
 
+  type EmailNewsSummary = {
+    email: string;
+    date: string;
+    newsContent: string;
+  };
+
   type AlertsListProps = {
     alertData: Alert[] | undefined;
   };

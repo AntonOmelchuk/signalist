@@ -1,7 +1,8 @@
 import { getNews } from "../actions/finnhub.actions";
 import { getAllUsersForNewsEmail } from "../actions/user.actions";
 import { getWatchlistSymbolsByEmail } from "../actions/watchlist.actions";
-import { sendWelcomeEmail } from "../nodemailer";
+import { sendNewsSummaryEmail, sendWelcomeEmail } from "../nodemailer";
+import { formatDateToday } from "../utils";
 import inngest from "./client";
 import {
   NEWS_SUMMARY_EMAIL_PROMPT,
@@ -136,5 +137,27 @@ export const sendDailyNewsSummary = inngest.createFunction(
         userNewsSummaries.push({ user, newsContent: null });
       }
     }
+
+    // Step#4 Senf the emails
+    await step.run("send-news-email", async () => {
+      await Promise.all(
+        userNewsSummaries.map(async ({ user, newsContent }) => {
+          if (!newsContent) return false;
+
+          const { email } = user;
+
+          return await sendNewsSummaryEmail({
+            email,
+            date: formatDateToday,
+            newsContent,
+          });
+        }),
+      );
+    });
+
+    return {
+      success: true,
+      message: "Daily news summary emails sent successfully",
+    };
   },
 );
