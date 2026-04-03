@@ -6,7 +6,7 @@ const FINNHUB_BASE_URL = "https://finnhub.io/api/v1";
 const TOKEN = process.env.NEXT_PUBLIC_FINNHUB_API_KEY ?? "";
 const MAX_ARTICLES = 6;
 
-type TOptions = RequestInit & { next?: { revaldiate?: number } };
+type TOptions = RequestInit & { next?: { revalidate?: number } };
 
 export const fetchJSON = async <T>(
   url: string,

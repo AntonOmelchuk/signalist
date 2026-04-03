@@ -121,7 +121,7 @@ export const sendDailyNewsSummary = inngest.createFunction(
         );
 
         const response = await step.ai.infer(`summarize-news-${email}`, {
-          model: step.ai.models.gemini({ model: "gemini-2.5-flash-light" }),
+          model: step.ai.models.gemini({ model: "gemini-2.5-flash-lite" }),
           body: {
             contents: [{ role: "user", parts: [{ text: prompt }] }],
           },
@@ -139,21 +139,17 @@ export const sendDailyNewsSummary = inngest.createFunction(
     }
 
     // Step#4 Senf the emails
-    await step.run("send-news-email", async () => {
-      await Promise.all(
-        userNewsSummaries.map(async ({ user, newsContent }) => {
-          if (!newsContent) return false;
+    for (const { user, newsContent } of userNewsSummaries) {
+      if (!newsContent) continue;
 
-          const { email } = user;
-
-          return await sendNewsSummaryEmail({
-            email,
-            date: formatDateToday,
-            newsContent,
-          });
-        }),
-      );
-    });
+      await step.run(`send-news-email-${user.id}`, async () => {
+        return sendNewsSummaryEmail({
+          email: user.email,
+          date: formatDateToday,
+          newsContent,
+        });
+      });
+    }
 
     return {
       success: true,

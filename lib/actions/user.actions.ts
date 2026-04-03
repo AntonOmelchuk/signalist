@@ -12,7 +12,7 @@ export const getAllUsersForNewsEmail = async (): Promise<User[]> => {
     const users = await db
       .collection("user")
       .find(
-        { email: { $exist: true, $ne: null } },
+        { email: { $exists: true, $ne: null } },
         { projection: { _id: 1, id: 1, email: 1, name: 1 } },
       )
       .toArray();
