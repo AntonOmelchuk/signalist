@@ -2,7 +2,7 @@
 
 import { Loader2, TrendingUp } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -26,6 +26,9 @@ const SearchCommand = ({
   const [stocks, setStocks] =
     useState<StockWithWatchlistStatus[]>(initialStocks);
 
+  const searchTermRef = useRef(searchTerm);
+  searchTermRef.current = searchTerm;
+
   const isSearchMode = !!searchTerm.trim();
   const displayStocks = isSearchMode ? stocks : stocks?.slice(0, 10);
 
@@ -40,19 +43,22 @@ const SearchCommand = ({
     return () => window.removeEventListener("keydown", onKeyDown);
   }, []);
 
-  const handleSearch = async () => {
-    if (!isSearchMode) return setStocks(initialStocks);
-
+  const handleSearch = useCallback(async () => {
+    const term = searchTermRef.current.trim();
+    if (!term) {
+      setStocks(initialStocks);
+      return;
+    }
     setLoading(true);
     try {
-      const results = await searchStocks(searchTerm.trim());
+      const results = await searchStocks(term);
       setStocks(results);
     } catch {
       setStocks([]);
     } finally {
       setLoading(false);
     }
-  };
+  }, [initialStocks]);
 
   const debouncedSearch = useDebounce(handleSearch, 300);
 
