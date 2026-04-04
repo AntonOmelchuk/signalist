@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
+  Command,
   CommandDialog,
   CommandEmpty,
   CommandInput,
@@ -14,11 +15,11 @@ import {
 import { useDebounce } from "@/hooks/useDebounce";
 import { searchStocks } from "@/lib/actions/finnhub.actions";
 
-export default function SearchCommand({
+const SearchCommand = ({
   renderAs = "button",
   label = "Add stock",
   initialStocks,
-}: SearchCommandProps) {
+}: SearchCommandProps) => {
   const [open, setOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(false);
@@ -81,52 +82,55 @@ export default function SearchCommand({
         onOpenChange={setOpen}
         className="search-dialog"
       >
-        <div className="search-field">
-          <CommandInput
-            value={searchTerm}
-            onValueChange={setSearchTerm}
-            placeholder="Search stocks..."
-            className="search-input"
-          />
-          {loading && <Loader2 className="search-loader" />}
-        </div>
-        <CommandList className="search-list">
-          {loading ? (
-            <CommandEmpty className="search-list-empty">
-              Loading stocks...
-            </CommandEmpty>
-          ) : displayStocks?.length === 0 ? (
-            <div className="search-list-indicator">
-              {isSearchMode ? "No results found" : "No stocks available"}
-            </div>
-          ) : (
-            <ul>
-              <div className="search-count">
-                {isSearchMode ? "Search results" : "Popular stocks"}
-                {` `}({displayStocks?.length || 0})
+        <Command>
+          <div className="search-field">
+            <CommandInput
+              value={searchTerm}
+              onValueChange={setSearchTerm}
+              placeholder="Search stocks..."
+              className="search-input"
+            />
+            {loading && <Loader2 className="search-loader" />}
+          </div>
+          <CommandList className="search-list">
+            {loading ? (
+              <CommandEmpty className="search-list-empty">
+                Loading stocks...
+              </CommandEmpty>
+            ) : displayStocks?.length === 0 ? (
+              <div className="search-list-indicator">
+                {isSearchMode ? "No results found" : "No stocks available"}
               </div>
-              {displayStocks?.map((stock, i) => (
-                <li key={stock.symbol} className="search-item">
-                  <Link
-                    href={`/stocks/${stock.symbol}`}
-                    onClick={handleSelectStock}
-                    className="search-item-link"
-                  >
-                    <TrendingUp className="h-4 w-4 text-gray-500" />
-                    <div className="flex-1">
-                      <div className="search-item-name">{stock.name}</div>
-                      <div className="text-sm text-gray-500">
-                        {stock.symbol} | {stock.exchange} | {stock.type}
+            ) : (
+              <ul>
+                <div className="search-count">
+                  {isSearchMode ? "Search results" : "Popular stocks"}
+                  {` `}({displayStocks?.length || 0})
+                </div>
+                {displayStocks?.map((stock, i) => (
+                  <li key={stock.symbol} className="search-item">
+                    <Link
+                      href={`/stocks/${stock.symbol}`}
+                      onClick={handleSelectStock}
+                      className="search-item-link"
+                    >
+                      <TrendingUp className="h-4 w-4 text-gray-500" />
+                      <div className="flex-1">
+                        <div className="search-item-name">{stock.name}</div>
+                        <div className="text-sm text-gray-500">
+                          {stock.symbol} | {stock.exchange} | {stock.type}
+                        </div>
                       </div>
-                    </div>
-                    {/*<Star />*/}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          )}
-        </CommandList>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </CommandList>
+        </Command>
       </CommandDialog>
     </>
   );
-}
+};
+
+export default SearchCommand;
