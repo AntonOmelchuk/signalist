@@ -1,6 +1,6 @@
 "use client";
 
-import { CheckIcon,MagnifyingGlassIcon } from "@phosphor-icons/react";
+import { CheckIcon, MagnifyingGlassIcon } from "@phosphor-icons/react";
 import { Command as CommandPrimitive } from "cmdk";
 import * as React from "react";
 

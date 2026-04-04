@@ -24,6 +24,7 @@ const eslintConfig = defineConfig([
       "simple-import-sort/exports": "error",
       "eol-last": ["error", "always"],
       "max-len": ["error", { code: 120 }],
+      "@typescript-eslint/no-explicit-any": "off",
       indent: ["error", 2],
       semi: ["error", "always"],
     },

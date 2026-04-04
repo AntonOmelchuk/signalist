@@ -178,6 +178,8 @@ declare global {
     open?: boolean;
     setOpen?: (open: boolean) => void;
     renderAs?: "button" | "text";
+    label?: string;
+    initialStocks: StockWithWatchlistStatus[];
     buttonLabel?: string;
     buttonVariant?: "primary" | "secondary";
     className?: string;
