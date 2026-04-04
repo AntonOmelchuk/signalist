@@ -64,7 +64,7 @@ const SearchCommand = ({
 
   useEffect(() => {
     debouncedSearch();
-  }, [searchTerm]);
+  }, [searchTerm, debouncedSearch]);
 
   const handleSelectStock = () => {
     setOpen(false);
@@ -75,9 +75,9 @@ const SearchCommand = ({
   return (
     <>
       {renderAs === "text" ? (
-        <span onClick={() => setOpen(true)} className="search-text">
+        <button onClick={() => setOpen(true)} className="search-text">
           {label}
-        </span>
+        </button>
       ) : (
         <Button onClick={() => setOpen(true)} className="search-btn">
           {label}
