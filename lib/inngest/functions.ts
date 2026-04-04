@@ -138,7 +138,7 @@ export const sendDailyNewsSummary = inngest.createFunction(
       }
     }
 
-    // Step#4 Senf the emails
+    // Step#4 Send the emails
     for (const { user, newsContent } of userNewsSummaries) {
       if (!newsContent) continue;
 
